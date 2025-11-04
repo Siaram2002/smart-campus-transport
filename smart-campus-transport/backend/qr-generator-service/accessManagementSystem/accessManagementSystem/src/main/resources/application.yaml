@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+  tomcat:
+    threads:
+      max: 200            # Max concurrent threads handling requests
+      min-spare: 20       # Keep 20 idle threads ready
+    accept-count: 1000    # Queue size before rejecting new requests
+
+spring:
+  application:
+    name: accessManagementSystem
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/accessManagementSystem?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      maximum-pool-size: 50          # Max active DB connections
+      minimum-idle: 10               # Idle connections kept ready
+      idle-timeout: 30000            # 30s idle timeout
+      connection-timeout: 30000      # Max wait before timing out (30s)
+      max-lifetime: 600000           # 10 minutes before recycling connection
+
+  jpa:
+    hibernate:
+      ddl-auto: update               # ✅ Use 'validate' in production
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true                   # Log SQL queries (for development)
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  main:
+    lazy-initialization: true        # Optimize startup memory
+
+logging:
+  level:
+    root: info
+    org.springframework.web: info
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+# ===============================================================
+# ✅ Custom App Settings
+# ===============================================================
+app:
+  base-url: http://localhost         # Change this to your server IP or domain later
+
+qr:
+  size: 300                          # QR image dimensions (width × height)
